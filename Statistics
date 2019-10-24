@@ -1,0 +1,33 @@
+def dataStatistics(data, statistic):
+    #Starting by making the string "statistic" all lowercase, to make it easier for the user to type
+    s = statistic.lower()
+    
+    #Returning the desired statistic in a float
+    if s == "mean temperature" or s == "mt":
+        result = np.mean(data[:,0])
+        
+    elif s == "mean growth rate" or s == "mgr":
+        result = np.mean(data[:,1])
+    
+    
+    elif s == "std temperature" or s == "sdt":
+        result = np.std(data[:,0],ddof=1)       #ddof=1 is for an unbiased distribution
+        
+    elif s == "std growth rate" or s == "sdg":
+        result = np.std(data[:,1],ddof=1)
+        
+    elif s == "rows" or s == "r":
+        result = np.size(data,0)
+        
+    elif s == "mean cold growth rate" or s == "mcgr":
+        result = np.mean(data[data[:,0]<20,1])
+        
+    elif s == "mean hot growth rate" or s == "mhgr":
+        result = np.mean(data[data[:,0]>50,1])
+        
+    else:
+        result = "Invalid statistic name"
+    
+    return result
+
+print(dataStatistics(data,"sdt"))
