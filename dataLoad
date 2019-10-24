@@ -1,0 +1,63 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 22 14:36:21 2019
+
+@author: idaxm
+"""
+import os
+import numpy as np
+import pandas as pd
+
+def dataLoad(filename):
+    # data from the file is imported into a numpy matrix
+    # if the data is not in the wanted format, display error message
+    try:
+        data = np.array(pd.read_csv(filename, delim_whitespace = True, header = None))
+    except:
+        return "I cannot read data in this format"
+    
+    if np.size(data,1) != 3:
+        return "I need data with three columns"
+    
+    # the cleaned data is saved in a list
+    cleanData = []
+    
+    # rows without errors are appended to cleanData  
+    for i, row in enumerate(data):
+        if(dataErrors(row) == ''):
+            cleanData.append(row)
+        
+        else:
+            print("Removed line " + str(i+1) + ": Invalid " + dataErrors(row))
+        
+    # cleanData is returned as a numpy array of floats for later use   
+    return np.array(cleanData).astype(float)
+
+
+# checks a row of data for errors, returns a string with error types
+# using try-except to catch non-number data
+def dataErrors(row):
+    errorList = []
+    
+    try:
+        if(float(row[0]) > 60 or float(row[0]) < 10):
+            errorList.append("temperature")
+    except:
+        errorList.append("temperature")
+    
+    try:
+        if(float(row[1]) < 0):
+            errorList.append("growth rate")
+    except:
+        errorList.append("growth rate")
+          
+    try:
+        if(float(row[2]) not in [1, 2, 3, 4]):
+            errorList.append("bacteria type")
+    except:
+        errorList.append("bacteria type")
+    
+    errorString = ", ".join(errorList)
+    return errorString
+
+print(dataLoad('test.txt'))
