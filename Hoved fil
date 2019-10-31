@@ -1,0 +1,76 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Oct 31 13:47:28 2019
+
+@author: frederik
+"""
+import pandas as pd
+import numpy as np
+import os
+
+from Statistics import dataStatistics
+from dataLoad import dataLoad
+from dataLoad import dataErrors
+
+print('###############################################\n###         Welcome to our program          ###\n###############################################')
+
+def Input(text):
+    print('1 - Load a file')
+    print('2 - Filter data')
+    print('3 - Show statistics')
+    print('4 - Generate diagrams')
+    print('5 - Exit the program')
+    while True:
+        try:
+            num = float(input(text))
+            if num <= 5 and num >= 1:
+                return num
+            else:
+                print(num, 'is not a number between 1 and 5')
+                
+        except ValueError:
+            print("That was not a number")
+
+def Load():
+    File=str(input('Please enter the name of the file\n'))
+    
+    while True:
+        Data = dataLoad(File)
+        if isinstance(Data,str) == True:
+            print(Data)
+            File=str(input('Please enter the name of the file\n'))
+        else:
+            return Data
+#StatistikTest.txt
+def Statistics():
+    while True:
+        statistic = input('What kind of statistic do you wanna do?\n\
+For Mean Temperature      - Write Mean Temperature or MT\n\
+For Mean Growth rate      - Write Mean Growth rate or MGR\n\
+For Std Temperature       - Write Std Temperature or SDT\n\
+For Std Growth rate       - Write Std Growth rate or SDG\n\
+For numbers of rows       - Write Rows or R\n\
+For Mean Cold Growth rate - Write Mean Cold Growth rate or MCGR\n\
+For Mean Hot Growth rate  - Write Mean Hot Growth rate or MHGR\n')
+        stat = dataStatistics(Data, statistic)
+        print(stat)
+        if stat != 'Invalid statistic name':
+            break
+
+while True:
+    UserInput = Input('Write a number between 1 and 5\n')
+    if UserInput == 1:
+        print('U have selected to load a file')
+        Data = Load()
+        print('\nYou have now succesfully loaded some data, what do you wanna do next?\n')
+    elif UserInput == 2:
+        print('2 - not yet implemented\n')
+    elif UserInput == 3:
+        print('You have chosen to do statistics on your data')
+        Statistics()
+        print('What do you wanna do now?\n')
+    elif UserInput == 4:
+        print('4 - not yet implemented\n')
+    elif UserInput == 5:
+        print('Thanks for using our program, till next time')
+        break 
