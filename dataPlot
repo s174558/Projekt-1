@@ -1,0 +1,51 @@
+def dataPlot(data):
+    
+    clean = dataLoad(data) # Taking the "clean" data from the data-file
+    freq_bacteria = Counter(clean[:,2]) # Count how many samples for each bacteria type
+    names = ['Salmonella enterica', 'Bacillus_cereus', 'Listeria', 'Brochothrix thermosphacta'] # Names of the bacterias
+    values = [freq_bacteria[1], freq_bacteria[2], freq_bacteria[3], freq_bacteria[4]] # Corresponding frequency of each bacteria
+    
+    #Making a bar diagram with 'Names of bacteria' out the x-axis 
+    # and 'Amount of bacteria' out the y-axis
+    plt.figure(figsize=(10, 5))  # width:10, height:5
+    plt.bar(names, values,edgecolor='black',linewidth=2) 
+    plt.xlabel('Names of bacteria')
+    plt.ylabel('Amount of bacteria')
+    plt.title('Bar diagram over number of different bacterias')
+    
+    plt.show()
+
+    # Getting the rows from each type of bacteria in order to make a matrix
+    # for every type of bacteria with temperature, growth rate and type
+    # in order to make a plot for each of them.
+    sE = clean[clean[:,2] == 1]
+    bC = clean[clean[:,2] == 2]
+    l = clean[clean[:,2] == 3]
+    bT = clean[clean[:,2] == 4]
+    
+    # Plotting the graphs for the bacteriatypes where the matrix values 
+    # have been sorted in order to get a meaningful plot.
+    plt.figure(figsize=(10, 5))
+    plt.plot(np.sort(sE[:,0]),np.sort(sE[:,1]),'r', label='Salmonella enterica')
+    plt.legend(loc='best')
+
+    plt.plot(np.sort(bC[:,0]),np.sort(bC[:,1]),'b', label='Bacillus_cereus')
+    plt.legend(loc='best')
+
+    plt.plot(np.sort(l[:,0]),np.sort(l[:,1]),'g', label='Listeria')
+    plt.legend(loc='best')
+
+    plt.plot(np.sort(bT[:,0]),np.sort(bT[:,1]),'k', label='Brochothrix thermosphacta')
+    plt.legend(loc='best')
+    
+    #Setting the labels and limits in order to live up to the requirements
+    plt.grid()
+    plt.xlabel('Temperature')
+    plt.ylabel('Growth rate')
+    plt.title('Growth rate as a function of temperature for each bacteria type')
+    plt.xlim([10,60])
+    plt.ylim([0,1])
+
+    plt.show()
+
+dataPlot(data)
