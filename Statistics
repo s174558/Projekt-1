@@ -4,30 +4,47 @@ def dataStatistics(data, statistic):
     
     #Returning the desired statistic in a float
     if s == "mean temperature" or s == "mt":
-        result = np.mean(data[:,0])
+        word = 'Mean Temperature'
+        result = str(np.mean(data[:,0]))
         
     elif s == "mean growth rate" or s == "mgr":
-        result = np.mean(data[:,1])
-    
+        word = 'Mean Growth rate'
+        result = str(np.mean(data[:,1]))
     
     elif s == "std temperature" or s == "sdt":
-        result = np.std(data[:,0],ddof=1)       #ddof=1 is for an unbiased distribution
+        word = 'Standard deviation of the Temperature'
+        if np.size(data,0) <= 1:
+            result = str(np.std(data[:,0],ddof=0))       #ddof=0 is for a normalised distribution
+        else:
+            result = str(np.std(data[:,0],ddof=1))       #ddof=1 is for an unbiased distribution
         
     elif s == "std growth rate" or s == "sdg":
-        result = np.std(data[:,1],ddof=1)
+        word = 'Standard deviation of the Growth rate'
+        if np.size(data,0) <= 1:
+            result = str(np.std(data[:,1],ddof=0))       #ddof=0 is for a normalised distribution
+        else:
+            result = str(np.std(data[:,1],ddof=1))       #ddof=1 is for an unbiased distribution
         
     elif s == "rows" or s == "r":
-        result = np.size(data,0)
+        word='number of rows'
+        result = str(np.size(data,0))
         
     elif s == "mean cold growth rate" or s == "mcgr":
+        word = 'Mean Cold Growth rate'
         result = np.mean(data[data[:,0]<20,1])
         
+        if math.isnan(result):
+            return 'You have no growth rates in temperatures under 20 degrees'
+        result = str(result)
+        
     elif s == "mean hot growth rate" or s == "mhgr":
+        word = 'Mean Hot Growth rate'
         result = np.mean(data[data[:,0]>50,1])
         
+        if math.isnan(result):
+            return 'You have no growth rates in temperatures over 50 degrees'
+        result=str(result)
     else:
         result = "Invalid statistic name"
     
-    return result
-
-print(dataStatistics(data,"sdt"))
+    return 'The '+word+' in your data is: '+result
