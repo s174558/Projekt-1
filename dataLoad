@@ -1,18 +1,14 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 22 14:36:21 2019
-
-@author: gudida
-"""
-import os
-import numpy as np
-import pandas as pd
-
 def dataLoad(filename):
+    
+    # finding the delimeter of the file
+    with open(filename, 'r') as csvfile:
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        separator = dialect.delimiter
+    
     # data from the file is imported into a numpy matrix
     # if the data is not in the wanted format, display error message
     try:
-        data = np.array(pd.read_csv(filename, delim_whitespace = True, header = None))
+        data = np.array(pd.read_csv(filename, sep=separator, header = None))
     except Exception as e:
         return "I cannot read data in this format (error: " + str(e) + ")"
     
@@ -58,3 +54,4 @@ def dataErrors(row):
         errorList.append("bacteria type")
     
     return ", ".join(errorList)
+    
