@@ -45,6 +45,6 @@ def dataStatistics(data, statistic):
             return 'You have no growth rates in temperatures over 50 degrees'
         result=str(result)
     else:
-        result = "Invalid statistic name"
+        return 'Invalid statistic name'
     
     return 'The '+word+' in your data is: '+result
