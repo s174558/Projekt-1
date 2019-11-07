@@ -7,10 +7,17 @@ Created on Thu Oct 31 13:47:28 2019
 import pandas as pd
 import numpy as np
 import os
+import matplotlib.pyplot as plt
 
 from Statistics import dataStatistics
 from dataLoad import dataLoad
 from dataLoad import dataErrors
+from dataPlot import dataPlot
+from dataSort import dataSort
+
+#Defining our data variables to be None
+Data = None
+DataSort = None
 
 print('###############################################\n###         Welcome to our program          ###\n###############################################')
 
@@ -32,17 +39,30 @@ def Input(text):
             print("That was not a number")
 
 def Load():
-    File=str(input('Please enter the name of the file\n'))
     
     while True:
+        File=str(input('Please enter the name of the file\n'))
         Data = dataLoad(File)
         if isinstance(Data,str) == True:
             print(Data)
-            File=str(input('Please enter the name of the file\n'))
+            
         else:
             return Data
-#StatistikTest.txt
+#Test fil: StatistikTest.txt
+
+def Filter():
+    
+
+    DataSort = dataSort(Data)
+    print('h',DataSort,'linjeskift\n',Data)
+    return
+
 def Statistics():
+    if Data is None and DataSort is None:
+        print('I don\'t have any data. Please select 1 to load a file\n')
+        return
+    
+#Runs the while-loop until the right paramteres have been used in in 'dataStatisticks' from 'Statistics.py'
     while True:
         statistic = input('What kind of statistic do you wanna do?\n\
 For Mean Temperature      - Write Mean Temperature or MT\n\
@@ -52,25 +72,87 @@ For Std Growth rate       - Write Std Growth rate or SDG\n\
 For numbers of rows       - Write Rows or R\n\
 For Mean Cold Growth rate - Write Mean Cold Growth rate or MCGR\n\
 For Mean Hot Growth rate  - Write Mean Hot Growth rate or MHGR\n')
-        stat = dataStatistics(Data, statistic)
-        print(stat)
-        if stat != 'Invalid statistic name':
+        try:
+            stat = dataStatistics(Data, statistic)
+            print(stat)
+            if stat != 'Invalid statistic name':
+                break
+        except:
+            print('You haven\'t loaded a file yet')
             break
+
+def Plot():
+    if Data is None and DataSort is None:
+        print('I don\'t have any data. Please select 1 to load a file\n')
+        return
+    
+    while True:
+        Typebakterie = input('Which bacteria type do you want to see plots for?\n\
+Salmonella enterica        - Write \'1\', \'se\' or \'salmonella enterica\' \n\
+Bacillus_cereus            - Write \'2\', \'bc\' or \'bacillus cereus\' \n\
+Listeria                   - Write \'3\', \'l\' or \'listeria\' \n\
+Brochothrix thermosphacta  - Write \'4\', \'bt\' or \'brochothrix thermosphacta\' ')
+        
+        allowedInputs = ["1","2","3","4", "se", "bc", "l", "bt", "salmonella enterica", "bacillus cereus", "listeria", "brochothrix thermosphacta"]
+        if(Typebakterie in allowedInputs):
+            index = allowedInputs.index(typeInput)
+            type = index%4
+            break
+        else:
+            print("\nThat is not a valid choice, try again!")
+                    
+        
+        
+        try:
+            if DataSort is not None:
+                dataPlot(DataSort)
+            elif Data is not None:
+                dataPlot(Data)
+            print('Those where some nice plots! What do you wanna do know?\n')
+            return
+        except:
+            print('You haven\'t loaded a file yet')
+            break
+    
+    
+    
+    
+    
+    if DataSort is not None:
+        dataPlot(DataSort)
+        print('Those where some nice plots! What do you wanna do know?\n')
+        return
+    elif Data is not None:
+        dataPlot(Data)
+        print('Those where some nice plots! What do you wanna do know?\n')
+        return
+    #if 'Data' in locals(): 
+    
+
 
 while True:
     UserInput = Input('Write a number between 1 and 5\n')
+
+#Finds the function which matches the users interest
     if UserInput == 1:
         print('U have selected to load a file')
         Data = Load()
         print('\nYou have now succesfully loaded some data, what do you wanna do next?\n')
     elif UserInput == 2:
-        print('2 - not yet implemented\n')
+        if Data is None and DataSort is None:
+            print('I don\'t have any data. Please select 1 to load a file\n')
+        else:
+            print('2 - not yet implemented\n')
+            Filter()
+        
     elif UserInput == 3:
         print('You have chosen to do statistics on your data')
         Statistics()
         print('What do you wanna do now?\n')
     elif UserInput == 4:
-        print('4 - not yet implemented\n')
+        print('You have chosen to see plots of your data\n')
+        Plot()
+        
     elif UserInput == 5:
         print('Thanks for using our program, till next time')
         break 
