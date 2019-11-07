@@ -9,9 +9,6 @@ import os
 import numpy as np
 import pandas as pd
 import re 
-from project1 import*
-
-os.chdir(r'C:\Users\idaxm\Google Drev\DTU\3. semester (endelig omg)\Programmering\Scripts\Project1')
 
 def sortInterval(sortTypeNo, sortTypeStr, data):
         while True:
@@ -44,7 +41,7 @@ def dataSort(data):
         return "Please load data before sorting it. It is highly difficult for me to sort non-existing data."
 
     while True:
-        sortType = input("What can I help you soring today?\n1. Temperature\n2. Growth Rate\n3. Type of Bacteria\n4. Clear all sortings\n5. Exit\n")
+        sortType = input("What do you wish to sort today?\n1. Temperature\n2. Growth Rate\n3. Type of Bacteria\n4. Clear all sortings\n5. Exit\n")
 
         if(sortType in ["1","2","3","4","5"]):
             sortType = float(sortType)
@@ -63,16 +60,16 @@ def dataSort(data):
                     typeInput = input("Please type the number, name or abbreviation of a bacteria type. This will be the only bacteria type remaining in your data after sorting: \n1. Salmonella enterica (SE) \n2. Bacillus cereus (BC) \n3. Listeria (L) \n4. Brochothrix thermosphacta (BT) \nBacteria type: ")
                     typeInput = typeInput.lower()
             
-                allowedInputs = ["1","2","3","4", "se", "bc", "l", "bt", "salmonella enterica", "bacillus cereus", "listeria", "brochothrix thermosphacta"]
-                if(typeInput in allowedInputs):
-                    index = allowedInputs.index(typeInput)
-                    type = index%4
-                    break
-                else:
-                    print("\nOops, that choice is not valid! I forgive you, but please try again!")
-                
-                    data = data[data[:,2] == type]
-                    print("Your data now only contains the " + allowedInputs[type + 8] + " bacteria.")
+                    allowedInputs = ["1","2","3","4", "se", "bc", "l", "bt", "salmonella enterica", "bacillus cereus", "listeria", "brochothrix thermosphacta"]
+                    if(typeInput in allowedInputs):
+                        index = allowedInputs.index(typeInput)
+                        type = index%4
+                        break
+                    else:
+                        print("\nOops, that choice is not valid! I forgive you, but please try again!")
+                    
+                data = data[data[:,2] == type]
+                print("Your data now only contains the " + allowedInputs[type + 8] + " bacteria.")
                     
                     
             # clearing all sortings
@@ -99,6 +96,3 @@ def dataSort(data):
        
         
     return data
-  
-data = dataLoad("test.txt")
-dataSort(data)
