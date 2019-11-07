@@ -69,7 +69,7 @@ def dataSort(data):
                     else:
                         print("\nOops, that choice is not valid! I forgive you, but please try again!")
                     
-                sortedData = sortedData[sortedData[:,2] == type]
+                sortedData = sortedData[sortedData[:,2] == type + 1]
                 print("Your data now only contains the " + allowedInputs[type + 8] + " bacteria.")
                     
                     
