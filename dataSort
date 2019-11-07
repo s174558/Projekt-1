@@ -1,0 +1,104 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Oct 31 16:23:31 2019
+
+@author: idaxm
+"""
+
+import os
+import numpy as np
+import pandas as pd
+import re 
+from project1 import*
+
+os.chdir(r'C:\Users\idaxm\Google Drev\DTU\3. semester (endelig omg)\Programmering\Scripts\Project1')
+
+def sortInterval(sortTypeNo, sortTypeStr, data):
+        while True:
+            try:
+                interval = input("Choose the desired interval of " + sortTypeStr + " [i,f] by writing 'i,f'\nInterval: ")
+                if re.match("-?[0-9]+[., _;:]-?[0-9]+", interval):
+                    intervalList = np.array(re.split("[., _;:]+", interval), dtype=float)
+                else:
+                    raise Exception("Whatever you typed was not in a correct format. Try again!")
+                    
+                i = intervalList[0]
+                f = intervalList[1]
+                if(i > f):
+                    raise ValueError("i must be less than or equal to f")
+                    
+                break
+            
+            except Exception as e:
+                print("Oh no! An error occured: " + str(e))
+                
+        data = data[data[:,sortTypeNo-1] >= i]
+        data = data[data[:,sortTypeNo-1] <= f]
+        print("Your data now only contains " + sortTypeStr + "s in the interval ["+ str(i) + "," + str(f) + "].")
+        
+        return data
+
+def dataSort(data):
+    
+    if data is None:
+        return "Please load data before sorting it. It is highly difficult for me to sort non-existing data."
+
+    while True:
+        sortType = input("What can I help you soring today?\n1. Temperature\n2. Growth Rate\n3. Type of Bacteria\n4. Clear all sortings\n5. Exit\n")
+
+        if(sortType in ["1","2","3","4","5"]):
+            sortType = float(sortType)
+            
+            # sorting Temperature
+            if(sortType == 1):
+                data = sortInterval(1, "temperature", data)
+        
+            # sorting Growth Rate
+            elif(sortType == 2):
+                data = sortInterval(2, "growth rate", data)
+        
+            # sorting Bacteria Type
+            elif(sortType == 3):
+                while True:
+                    typeInput = input("Please type the number, name or abbreviation of a bacteria type. This will be the only bacteria type remaining in your data after sorting: \n1. Salmonella enterica (SE) \n2. Bacillus cereus (BC) \n3. Listeria (L) \n4. Brochothrix thermosphacta (BT) \nBacteria type: ")
+                    typeInput = typeInput.lower()
+            
+                allowedInputs = ["1","2","3","4", "se", "bc", "l", "bt", "salmonella enterica", "bacillus cereus", "listeria", "brochothrix thermosphacta"]
+                if(typeInput in allowedInputs):
+                    index = allowedInputs.index(typeInput)
+                    type = index%4
+                    break
+                else:
+                    print("\nOops, that choice is not valid! I forgive you, but please try again!")
+                
+                    data = data[data[:,2] == type]
+                    print("Your data now only contains the " + allowedInputs[type + 8] + " bacteria.")
+                    
+                    
+            # clearing all sortings
+            elif(sortType == 4):
+                yes = ['yes', 'ye', 'y', 'true', 'ja']
+                no = ['no', 'n', 'false']
+                
+                while True:
+                    choice = input("Are you sure you would like to clear all your previous sortings? \n")
+                    if choice in yes:
+                        data = None; 
+                        print("Your sortings have been cleared, and you are now working with the original data set.")
+                        break
+                    elif choice in no:
+                        print("All good, I will not delete your sortings.")
+                        break
+                    
+            elif(sortType == 5):
+                print("Goodbye!")
+                return data
+           
+        else:
+                print("Oops, that doesn't seem to be a valid choice! Try again!")
+       
+        
+    return data
+  
+data = dataLoad("test.txt")
+dataSort(data)
