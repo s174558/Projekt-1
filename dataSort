@@ -14,8 +14,8 @@ def sortInterval(sortTypeNo, sortTypeStr, data):
         while True:
             try:
                 interval = input("Choose the desired interval of " + sortTypeStr + " [i,f] by writing 'i,f'\nInterval: ")
-                if re.match("-?[0-9]+[., _;:]-?[0-9]+", interval):
-                    intervalList = np.array(re.split("[., _;:]+", interval), dtype=float)
+                if re.match("-?[0-9]+.?([0-9]+)?[,_;: ]-?[0-9]+.?([0-9]+)?", interval):
+                    intervalList = np.array(re.split("[,_;: ]+", interval), dtype=float)
                 else:
                     raise Exception("Whatever you typed was not in a correct format. Try again!")
                     
@@ -81,9 +81,8 @@ def dataSort(data):
                 while True:
                     choice = input("Are you sure you would like to clear all your previous sortings? \n")
                     if choice in yes:
-                        sortedData = data; 
                         print("Your sortings have been cleared, and you are now working with the original data set.")
-                        break
+                        return None;
                     elif choice in no:
                         print("All good, I will not delete your sortings.")
                         break
