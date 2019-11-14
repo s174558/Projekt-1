@@ -7,16 +7,17 @@ import csv
 def dataLoad(filename):
     
     # finding the delimeter of the file
-    with open(filename, 'r') as csvfile:
-        dialect = csv.Sniffer().sniff(csvfile.read(1024))
-        separator = dialect.delimiter
+    
     
     # data from the file is imported into a numpy matrix
     # if the data is not in the wanted format, display error message
     try:
+        with open(filename, 'r') as csvfile:
+            dialect = csv.Sniffer().sniff(csvfile.read(1024))
+            separator = dialect.delimiter
         data = np.array(pd.read_csv(filename, sep=separator, header = None))
     except Exception as e:
-        return "I cannot read data in this format (error: " + str(e) + ")"
+        return "I cannot read this data (error: " + str(e) + ")"
     
     if np.size(data,1) != 3:
         return "I need data with three columns"
