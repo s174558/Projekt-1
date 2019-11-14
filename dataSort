@@ -10,11 +10,15 @@ import numpy as np
 import pandas as pd
 import re 
 
+# sorts a paramter in a given interval
 def sortInterval(sortTypeNo, sortTypeStr, data):
         while True:
             try:
                 interval = input("Choose the desired interval of " + sortTypeStr + " [i,f] by writing 'i,f'\nInterval: ")
+                
+                # checking if interval is in the desired format (two numbers separated by one of ,_;:)
                 if re.match("-?[0-9]+.?([0-9]+)?[,_;: ]-?[0-9]+.?([0-9]+)?", interval):
+                    # the two numbers are saved in an array
                     intervalList = np.array(re.split("[,_;: ]+", interval), dtype=float)
                 else:
                     raise Exception("Whatever you typed was not in a correct format. Try again!")
@@ -29,14 +33,20 @@ def sortInterval(sortTypeNo, sortTypeStr, data):
             except Exception as e:
                 print("Oh no! An error occured: " + str(e))
                 
+        # the data matrix is upated to only contain the wanted values
         data = data[data[:,sortTypeNo-1] >= i]
         data = data[data[:,sortTypeNo-1] <= f]
+        
         print("Your data now only contains " + sortTypeStr + "s in the interval ["+ str(i) + "," + str(f) + "].")
         
-        return data
+        return (data, (sortTypeStr.capitalize() + ": ["+ str(i) + "," + str(f) + "]."))
 
+# main function for sorting data
 def dataSort(data):
+    # saving the sorted data in a new variable
     sortedData = data
+    # saving descriptions of the sortings in a list
+    sortString = []
     
     if sortedData is None:
         return "Please load data before sorting it. It is highly difficult for me to sort non-existing data."
@@ -49,27 +59,35 @@ def dataSort(data):
             
             # sorting Temperature
             if(sortType == 1):
-                sortedData = sortInterval(1, "temperature", sortedData)
+                # getting the sorted matrix and the sorting explanation string from sortInterval
+                sortResult = sortInterval(1, "temperature", sortedData)
+                sortedData = sortResult[0]
+                sortString.append(sortResult[1])
         
             # sorting Growth Rate
             elif(sortType == 2):
-                sortedData = sortInterval(2, "growth rate", sortedData)
-        
+                sortResult = sortInterval(2, "growth rate", sortedData)
+                sortedData = sortResult[0]
+                sortString.append(sortResult[1])
+                    
             # sorting Bacteria Type
             elif(sortType == 3):
                 while True:
                     typeInput = input("Please type the number, name or abbreviation of a bacteria type. This will be the only bacteria type remaining in your data after sorting: \n1. Salmonella enterica (SE) \n2. Bacillus cereus (BC) \n3. Listeria (L) \n4. Brochothrix thermosphacta (BT) \nBacteria type: ")
                     typeInput = typeInput.lower()
             
+                    # checking if the user has typed a valid input
                     allowedInputs = ["1","2","3","4", "se", "bc", "l", "bt", "salmonella enterica", "bacillus cereus", "listeria", "brochothrix thermosphacta"]
                     if(typeInput in allowedInputs):
                         index = allowedInputs.index(typeInput)
+                        # the type chosen is calculated
                         type = index%4
                         break
                     else:
                         print("\nOops, that choice is not valid! I forgive you, but please try again!")
                     
                 sortedData = sortedData[sortedData[:,2] == type + 1]
+                sortString.append("Bacteria type: " + allowedInputs[type + 8])
                 print("Your data now only contains the " + allowedInputs[type + 8] + " bacteria.")
                     
                     
@@ -82,17 +100,18 @@ def dataSort(data):
                     choice = input("Are you sure you would like to clear all your previous sortings? \n")
                     if choice in yes:
                         print("Your sortings have been cleared, and you are now working with the original data set.")
-                        return None;
+                        # setting the sortedData matrix to none and clearing the string of sorting explanations
+                        return (None, "");
                     elif choice in no:
                         print("All good, I will not delete your sortings.")
                         break
                     
+            # exiting the sorting program
             elif(sortType == 5):
                 print("Goodbye!")
-                return sortedData
+                return(sortedData, sortString)
            
         else:
                 print("Oops, that doesn't seem to be a valid choice! Try again!")
-       
-        
-    return sortedData
+          
+    return(sortedData, sortString)
