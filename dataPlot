@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Nov  7 13:21:17 2019
+
+@author: frederik
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
@@ -71,3 +77,5 @@ def dataPlot(data):
     plt.ylim([0,1])
 
     plt.show()
+
+#dataPlot('StatistikTest.txt')
