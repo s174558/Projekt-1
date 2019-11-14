@@ -53,7 +53,7 @@ def dataSort(data):
         return "Please load data before sorting it. It is highly difficult for me to sort non-existing data."
 
     while True:
-        sortType = input("What do you wish to sort today?\n1. Temperature\n2. Growth Rate\n3. Type of Bacteria\n4. Clear all sortings\n5. Exit\n")
+        sortType = input("What do you wish to sort today?\n1. Temperature\n2. Growth Rate\n3. Type of Bacteria\n4. Clear all sortings\n5. Back to main menu\n")
 
         if(sortType in ["1","2","3","4","5"]):
             sortType = float(sortType)
@@ -109,7 +109,6 @@ def dataSort(data):
                     
             # exiting the sorting program
             elif(sortType == 5):
-                print("Goodbye!")
                 return(sortedData, sortString)
            
         else:
