@@ -11,22 +11,31 @@ import matplotlib.pyplot as plt
 
 from Statistics import dataStatistics
 from dataLoad import dataLoad
-from dataLoad import dataErrors
+
 from dataPlot import dataPlot
 from dataSort import dataSort
 
 #Defining our data variables to be None
 Data = None
 DataSort = None
+DataString = ""
 
+#Making the intro to our program
 print('###############################################\n###         Welcome to our program          ###\n###############################################')
 
 def Input(text):
+    #If we have any changes to the Data, they will be showed:
+    if DataSort is not None:
+        print('The sorted values:\n', DataString)
+        
+    #Writing the menu
     print('1 - Load a file')
     print('2 - Filter data')
     print('3 - Show statistics')
     print('4 - Generate diagrams')
     print('5 - Exit the program')
+    
+    #Making an endless loop, which makes the user write a number between 1-5, to choose from the meny
     while True:
         try:
             num = float(input(text))
@@ -39,12 +48,16 @@ def Input(text):
             print("That was not a number")
 
 def Load():
+    #Using the global Data, as we dont need a local variable
+    global Data
     
+    #Endless loop, which forces the user to input a file name, or 'x' to return
     while True:
         File=str(input("Please enter the name of the file or type 'x' to exit\n"))
         
         if File.lower() == 'x':
-            return None
+            print('\nYou have gone back to the main menu. What do you want to do next?\n')
+            return
         
         else: 
             Data = dataLoad(File)   
@@ -55,24 +68,38 @@ def Load():
             print(Data)
         
         else:
-            return Data
+            print('\nYou have now succesfully loaded some data, what do you want to do now?\n')
+            return
 
 def Filter():
     global DataSort
+    global DataString
+    
+    #Checking if Data has been loaded
     if Data is None:
-        print('I don\'t have any data. Please select 1 to load a file\n')
+        print('You don\'t have any data loaded. Please select 1 to load a file\n')
         return
     
+    #Choosing the sorted data if it is available, else just the normal Data
     if DataSort is not None:
-        DataSort = dataSort(DataSort)
+        result = dataSort(DataSort)
     elif Data is not None:
-        DataSort = dataSort(Data)
+        result = dataSort(Data)
+        
+    #Saving the soted data [0], in a new Data variable, and the string [1] with the changes
+    DataSort = result[0]
+    DataString += result[1]
+    
+    #Erasing the string if the sorted data, has been converted back to the original data.
+    if DataSort is None:
+        DataString = ''
+    print('You have now succesfully sorted your data, what do you want to do now?\n')
     return
 
 
 def Statistics():
     if Data is None:
-        print('I don\'t have any data. Please select 1 to load a file\n')
+        print('You don\'t have any data loaded. Please select 1 to load a file\n')
         return
     
 #Runs the while-loop until the right paramteres have been used in in 'dataStatisticks' from 'Statistics.py'
@@ -86,15 +113,21 @@ For numbers of rows       - Write Rows or R\n\
 For Mean Cold Growth rate - Write Mean Cold Growth rate or MCGR\n\
 For Mean Hot Growth rate  - Write Mean Hot Growth rate or MHGR\n')
         
-        stat = dataStatistics(Data, statistic)
+        if DataSort is not None:
+            stat = dataStatistics(DataSort, statistic)
+        elif Data is not None:
+            stat = dataStatistics(Data, statistic)
         print(stat)
+        
+        # 'dataStatisticks' returns a string containing 'Invalid statistic name',
+        # if the input doesn't meet the requirements
         if stat != 'Invalid statistic name':
             print('What do you want to do now?\n')
             return
 
 def Plot():
     if Data is None:
-        print('I don\'t have any data. Please select 1 to load a file\n')
+        print('You don\'t have any data loaded. Please select 1 to load a file\n')
         return
     
     if DataSort is not None:
@@ -106,17 +139,18 @@ def Plot():
     
 
 while True:
+    #Calling the main meny function
     UserInput = Input('Write a number between 1 and 5\n')
 
 #Finds the function which matches the users interest
     if UserInput == 1:
         print('You have selected to load a file')
-        Data = Load()
-        print('\nYou have now succesfully loaded some data, what do you want to do now?\n')
+        Load()
+        
     elif UserInput == 2:
-        print('You have selected to sort your data\n')
+        print('You have selected to sort your data')
         Filter()
-        print('You have now succesfully sorted your data, what do you want to do now?\n')
+        
     elif UserInput == 3:
         print('You have chosen to do statistics on your data')
         Statistics()
