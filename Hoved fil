@@ -51,14 +51,20 @@ def Load():
 #Test fil: StatistikTest.txt
 
 def Filter():
+    global DataSort
+    if Data is None:
+        print('I don\'t have any data. Please select 1 to load a file\n')
+        return
     
-
-    DataSort = dataSort(Data)
-    print('h',DataSort,'linjeskift\n',Data)
+    if DataSort is not None:
+        DataSort = dataSort(DataSort)
+    elif Data is not None:
+        DataSort = dataSort(Data)
     return
 
+
 def Statistics():
-    if Data is None and DataSort is None:
+    if Data is None:
         print('I don\'t have any data. Please select 1 to load a file\n')
         return
     
@@ -72,83 +78,43 @@ For Std Growth rate       - Write Std Growth rate or SDG\n\
 For numbers of rows       - Write Rows or R\n\
 For Mean Cold Growth rate - Write Mean Cold Growth rate or MCGR\n\
 For Mean Hot Growth rate  - Write Mean Hot Growth rate or MHGR\n')
-        try:
-            stat = dataStatistics(Data, statistic)
-            print(stat)
-            if stat != 'Invalid statistic name':
-                break
-        except:
-            print('You haven\'t loaded a file yet')
-            break
+        
+        stat = dataStatistics(Data, statistic)
+        print(stat)
+        if stat != 'Invalid statistic name':
+            #print('%.2f' % stat)
+            print('What do you want to do now?\n')
+            return
 
 def Plot():
-    if Data is None and DataSort is None:
+    if Data is None:
         print('I don\'t have any data. Please select 1 to load a file\n')
         return
     
-    while True:
-        Typebakterie = input('Which bacteria type do you want to see plots for?\n\
-Salmonella enterica        - Write \'1\', \'se\' or \'salmonella enterica\' \n\
-Bacillus_cereus            - Write \'2\', \'bc\' or \'bacillus cereus\' \n\
-Listeria                   - Write \'3\', \'l\' or \'listeria\' \n\
-Brochothrix thermosphacta  - Write \'4\', \'bt\' or \'brochothrix thermosphacta\' ')
-        
-        allowedInputs = ["1","2","3","4", "se", "bc", "l", "bt", "salmonella enterica", "bacillus cereus", "listeria", "brochothrix thermosphacta"]
-        if(Typebakterie in allowedInputs):
-            index = allowedInputs.index(typeInput)
-            type = index%4
-            break
-        else:
-            print("\nThat is not a valid choice, try again!")
-                    
-        
-        
-        try:
-            if DataSort is not None:
-                dataPlot(DataSort)
-            elif Data is not None:
-                dataPlot(Data)
-            print('Those where some nice plots! What do you wanna do know?\n')
-            return
-        except:
-            print('You haven\'t loaded a file yet')
-            break
-    
-    
-    
-    
-    
     if DataSort is not None:
         dataPlot(DataSort)
-        print('Those where some nice plots! What do you wanna do know?\n')
-        return
     elif Data is not None:
         dataPlot(Data)
-        print('Those where some nice plots! What do you wanna do know?\n')
-        return
-    #if 'Data' in locals(): 
+    print('Those where some nice plots! What do you want to do know?\n')
+    return
     
-
 
 while True:
     UserInput = Input('Write a number between 1 and 5\n')
 
 #Finds the function which matches the users interest
     if UserInput == 1:
-        print('U have selected to load a file')
+        print('You have selected to load a file')
         Data = Load()
-        print('\nYou have now succesfully loaded some data, what do you wanna do next?\n')
+        print('\nYou have now succesfully loaded some data, what do you want to do now?\n')
     elif UserInput == 2:
-        if Data is None and DataSort is None:
-            print('I don\'t have any data. Please select 1 to load a file\n')
-        else:
-            print('2 - not yet implemented\n')
-            Filter()
-        
+        print('You have selected to sort your data\n')
+        Filter()
+        print('You have now succesfully sorted your data, what do you want to do now?\n')
     elif UserInput == 3:
         print('You have chosen to do statistics on your data')
         Statistics()
-        print('What do you wanna do now?\n')
+        
     elif UserInput == 4:
         print('You have chosen to see plots of your data\n')
         Plot()
