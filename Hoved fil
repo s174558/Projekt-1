@@ -49,6 +49,8 @@ def Input(text):
 def Load():
     #Using the global Data, as we dont need a local variable
     global Data
+    global DataSort
+    global DataString
     
     #Endless loop, which forces the user to input a file name, or 'x' to return
     while True:
@@ -67,6 +69,8 @@ def Load():
             print(Data)
         
         else:
+            DataSort = None
+            DataString = ''
             print('\nYou have now succesfully loaded some data, what do you want to do now?\n')
             return
 
