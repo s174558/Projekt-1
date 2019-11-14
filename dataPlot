@@ -77,5 +77,3 @@ def dataPlot(data):
     plt.ylim([0,1])
 
     plt.show()
-
-#dataPlot('StatistikTest.txt')
