@@ -28,11 +28,11 @@ def Input(text):
         print('The sorted values:\n'+ DataString)
         
     #Writing the menu
-    print('1 - Load a file')
-    print('2 - Filter data')
-    print('3 - Show statistics')
-    print('4 - Generate diagrams')
-    print('5 - Exit the program')
+    print('1 - Load data')
+    print('2 - Filter Data')
+    print('3 - Display statistics')
+    print('4 - Generate plots')
+    print('5 - Quit')
     
     #Making an endless loop, which makes the user write a number between 1-5, to choose from the meny
     while True:
