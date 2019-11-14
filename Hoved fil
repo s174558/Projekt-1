@@ -41,14 +41,21 @@ def Input(text):
 def Load():
     
     while True:
-        File=str(input('Please enter the name of the file\n'))
-        Data = dataLoad(File)
-        if isinstance(Data,str) == True:
-            print(Data)
+        File=str(input("Please enter the name of the file or type 'x' to exit\n"))
+        
+        if File.lower() == 'x':
+            return None
+        
+        else: 
+            Data = dataLoad(File)   
             
+        # dataLoad returns a string with an error message if the file name is not valid
+        # if this happens, return the string and try loading again
+        if isinstance(Data,str):
+            print(Data)
+        
         else:
             return Data
-#Test fil: StatistikTest.txt
 
 def Filter():
     global DataSort
