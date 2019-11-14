@@ -82,7 +82,6 @@ For Mean Hot Growth rate  - Write Mean Hot Growth rate or MHGR\n')
         stat = dataStatistics(Data, statistic)
         print(stat)
         if stat != 'Invalid statistic name':
-            #print('%.2f' % stat)
             print('What do you want to do now?\n')
             return
 
