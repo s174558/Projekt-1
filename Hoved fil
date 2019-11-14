@@ -24,8 +24,8 @@ print('###############################################\n###         Welcome to o
 
 def Input(text):
     #If we have any changes to the Data, they will be showed:
-    if DataString != "": 
-        print('The sorted values:\n' + DataString)
+    if DataString != "":
+        print('The sorted values:\n'+ DataString)
         
     #Writing the menu
     print('1 - Load a file')
@@ -67,6 +67,7 @@ def Load():
         # if this happens, return the string and try loading again
         if isinstance(Data,str):
             print(Data)
+            Data = None
         
         else:
             DataSort = None
