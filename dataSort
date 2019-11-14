@@ -9,6 +9,9 @@ import os
 import numpy as np
 import pandas as pd
 import re 
+from project1 import*
+
+os.chdir(r'C:\Users\idaxm\Google Drev\DTU\3. semester (endelig omg)\Programmering\Scripts\Project1')
 
 # sorts a paramter in a given interval
 def sortInterval(sortTypeNo, sortTypeStr, data):
