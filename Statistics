@@ -1,41 +1,60 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Oct 24 13:31:03 2019
+
+@author: frederik
+"""
+
+" Projekt opgave 1 - Bakterie analyse - Statistics "
+import pandas as pd
+import numpy as np
+import os
+import math
+
+#os.chdir('C:/Users/frederik/OneDrive - Danmarks Tekniske Universitet/DTU 3. semester/Python programmering/Ugelige opgaver')
+P1Statistik = pd.read_csv('StatistikTest.csv')
+
+#print(np.array(P1Statistik.iloc[:,0]))
+
+
 def dataStatistics(data, statistic):
     #Starting by making the string "statistic" all lowercase, to make it easier for the user to type
     s = statistic.lower()
     
-    #Returning the desired statistic in a float
+    #Returning the desired statistic as a str
     if s == "mean temperature" or s == "mt":
-        word = 'Mean Temperature'
-        result = str(np.mean(data[:,0]))
+        word = 'Mean Temperature'        
+        result = np.mean(data[:,0])
+        print(result)
         
     elif s == "mean growth rate" or s == "mgr":
         word = 'Mean Growth rate'
-        result = str(np.mean(data[:,1]))
+        result = np.mean(data[:,1])
     
     elif s == "std temperature" or s == "sdt":
         word = 'Standard deviation of the Temperature'
         if np.size(data,0) <= 1:
-            result = str(np.std(data[:,0],ddof=0))       #ddof=0 is for a normalised distribution
+            result = np.std(data[:,0],ddof=0)       #ddof=0 is for a normalised distribution
         else:
-            result = str(np.std(data[:,0],ddof=1))       #ddof=1 is for an unbiased distribution
+            result = np.std(data[:,0],ddof=1)     #ddof=1 is for an unbiased distribution
         
     elif s == "std growth rate" or s == "sdg":
         word = 'Standard deviation of the Growth rate'
         if np.size(data,0) <= 1:
-            result = str(np.std(data[:,1],ddof=0))       #ddof=0 is for a normalised distribution
+            result = np.std(data[:,1],ddof=0)       #ddof=0 is for a normalised distribution
         else:
-            result = str(np.std(data[:,1],ddof=1))       #ddof=1 is for an unbiased distribution
+            result = np.std(data[:,1],ddof=1)       #ddof=1 is for an unbiased distribution
         
     elif s == "rows" or s == "r":
         word='number of rows'
-        result = str(np.size(data,0))
+        result = np.size(data,0)
         
     elif s == "mean cold growth rate" or s == "mcgr":
         word = 'Mean Cold Growth rate'
         result = np.mean(data[data[:,0]<20,1])
         
-        if math.isnan(result):
+        if math.isnan(result):                      #Checking to see if result is not a number
             return 'You have no growth rates in temperatures under 20 degrees'
-        result = str(result)
         
     elif s == "mean hot growth rate" or s == "mhgr":
         word = 'Mean Hot Growth rate'
@@ -43,8 +62,8 @@ def dataStatistics(data, statistic):
         
         if math.isnan(result):
             return 'You have no growth rates in temperatures over 50 degrees'
-        result=str(result)
+        
     else:
         return 'Invalid statistic name'
     
-    return 'The '+word+' in your data is: '+result
+    return 'The '+word+' in your data is: '+'{0:.2f}'.format(round(result,2))
