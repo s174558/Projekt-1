@@ -10,13 +10,12 @@ import numpy as np
 import pandas as pd
 import re 
 
-os.chdir(r'C:\Users\idaxm\Google Drev\DTU\3. semester (endelig omg)\Programmering\Scripts\Project1')
 
 # sorts a paramter in a given interval
 def sortInterval(sortTypeNo, sortTypeStr, data):
         while True:
             try:
-                interval = input("Choose the desired interval of " + sortTypeStr + " [i,f] by writing 'i,f'\nInterval: ")
+                interval = input("Choose the desired interval of " + sortTypeStr + " [i,f] by writing: i,f \nInterval: ")
                 
                 # checking if interval is in the desired format (two numbers separated by one of ,_;:)
                 if re.match("-?[0-9]+.?([0-9]+)?[,_;: ]-?[0-9]+.?([0-9]+)?", interval):
@@ -48,7 +47,7 @@ def dataSort(data):
     # saving the sorted data in a new variable
     sortedData = data
     # saving descriptions of the sortings in a list
-    sortString = []
+    sortString = ""
     
     if sortedData is None:
         return "Please load data before sorting it. It is highly difficult for me to sort non-existing data."
@@ -64,13 +63,13 @@ def dataSort(data):
                 # getting the sorted matrix and the sorting explanation string from sortInterval
                 sortResult = sortInterval(1, "temperature", sortedData)
                 sortedData = sortResult[0]
-                sortString.append(sortResult[1])
+                sortString += sortResult[1] + "\n"
         
             # sorting Growth Rate
             elif(sortType == 2):
                 sortResult = sortInterval(2, "growth rate", sortedData)
                 sortedData = sortResult[0]
-                sortString.append(sortResult[1])
+                sortString +=(sortResult[1]) + "\n"
                     
             # sorting Bacteria Type
             elif(sortType == 3):
@@ -89,7 +88,7 @@ def dataSort(data):
                         print("\nOops, that choice is not valid! I forgive you, but please try again!")
                     
                 sortedData = sortedData[sortedData[:,2] == type + 1]
-                sortString.append("Bacteria type: " + allowedInputs[type + 8])
+                sortString += "Bacteria type: " + allowedInputs[type + 8] + "\n"
                 print("Your data now only contains the " + allowedInputs[type + 8] + " bacteria.")
                     
                     
@@ -103,7 +102,7 @@ def dataSort(data):
                     if choice in yes:
                         print("Your sortings have been cleared, and you are now working with the original data set.")
                         # setting the sortedData matrix to none and clearing the string of sorting explanations
-                        return (None, "");
+                        return (None, '');
                     elif choice in no:
                         print("All good, I will not delete your sortings.")
                         break
