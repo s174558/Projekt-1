@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Oct 31 14:21:31 2019
+
+@author: idaxm
+"""
 
 import os
 import numpy as np
